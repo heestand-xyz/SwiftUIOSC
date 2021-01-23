@@ -15,7 +15,7 @@ import SwiftUI
 import SwiftUIOSC
 ```
 
-Create a `OSCState` with a osc address.
+Wrap a property with the `@OSCState` and give it an osc address name.
 
 ## TL;DR
 
@@ -187,3 +187,7 @@ struct ContentView: View {
 
 > If you got a **macOS** target in your project make sure to enable **Networking** under "Signing & Capabilities" / "App Sandbox":
 > Enable "Incoming Connections (Server)" and "Outgoing Connections (Client)"
+
+## Credits
+
+powered by [OSCKit](https://github.com/SammySmallman/OSCKit) and [Reachability.swift](https://github.com/ashleymills/Reachability.swift)
