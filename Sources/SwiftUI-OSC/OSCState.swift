@@ -7,7 +7,7 @@ public struct OSCState<T: OSCValue>: DynamicProperty {
     
     @State var value: T {
         didSet {
-            OSCWrapper.shared.send(value: value, at: address)
+            OSC.shared.send(value: value, at: address)
         }
     }
     

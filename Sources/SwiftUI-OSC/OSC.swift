@@ -1,9 +1,10 @@
 import Foundation
 import OSCKit
+import Reachability
 
-public class OSCWrapper: ObservableObject {
+public class OSC: ObservableObject, OSCConnectionMonitorDelegate {
     
-    public static let shared: OSCWrapper = .init()
+    public static let shared: OSC = .init()
     
     let client: OSCClient
     let server: OSCServer
@@ -20,6 +21,10 @@ public class OSCWrapper: ObservableObject {
             client.port = UInt16(clientPort)
         }
     }
+    
+    // Local IP Address
+    @Published var _serverAddress: String?
+    public var serverAddress: String? { _serverAddress }
     /// Local Port
     @Published public var serverPort: Int = 7000 {
         didSet {
@@ -30,14 +35,20 @@ public class OSCWrapper: ObservableObject {
     
     let taker: OSCTaker
     
+    let connectionMonitor: OSCConnectionMonitor
+    @Published public var connection: OSCConnection = .unknown
+    
     init() {
         
         client = OSCClient()
         server = OSCServer()
 
         taker = OSCTaker(take: { address, values in
-            print("OSCWrapper - Received OSC at \(address)", values)
+            print("OSCWrapper - Received OSC at \"\(address)\" with values:", values)
         })
+        
+        connectionMonitor = OSCConnectionMonitor()
+        connectionMonitor.delegate = self
         
         client.host = clientAddress
         client.port = UInt16(clientPort)
@@ -52,7 +63,7 @@ public class OSCWrapper: ObservableObject {
     func listen() {
         do {
             try server.startListening()
-            print("OSCWrapper - Server listening on port \(serverPort)")
+            print("OSCWrapper - Server listening on port \(serverPort).")
         } catch {
             print("OSCWrapper - Server failed to listen on port \(serverPort):", error)
         }
@@ -67,9 +78,17 @@ public class OSCWrapper: ObservableObject {
         if address.first != "/" {
             address = "/\(address)"
         }
-        print("OSCWrapper - Sent OSC at \(address)", values)
+        print("OSCWrapper - Sent OSC at \"\(address)\" with values:", values)
         let message = OSCMessage(with: address, arguments: values)
         client.send(packet: message)
+    }
+    
+    func connectionMonitor(connection: OSCConnection) {
+        self.connection = connection
+    }
+    
+    func connectionMonitor(ipAddress: String?) {
+        _serverAddress = ipAddress
     }
     
 }
