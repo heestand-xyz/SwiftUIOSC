@@ -32,9 +32,11 @@ struct ContentView: View {
 }
 ```
 
-## Demo Example
+## Demo Project
 
 Demo project avalible in repo.
+
+<img src="https://github.com/heestand-xyz/SwiftUIOSC/blob/main/Assets/SwiftUIOSC-Screenshot-iOS.png?raw=true" width=300> <img src="https://github.com/heestand-xyz/SwiftUIOSC/blob/main/Assets/SwiftUIOSC-Screenshot-macOS.png?raw=true" width=400>
 
 ```swift
 struct ContentView: View {
