@@ -3,20 +3,20 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftUI-OSC",
+    name: "SwiftUIOSC",
     platforms: [
         .iOS(.v13),
         .tvOS(.v13),
         .macOS(.v10_15),
     ],
     products: [
-        .library(name: "SwiftUI-OSC", targets: ["SwiftUI-OSC"]),
+        .library(name: "SwiftUIOSC", targets: ["SwiftUIOSC"]),
     ],
     dependencies: [
         .package(url: "https://github.com/SammySmallman/OSCKit", from: "2.1.0"),
         .package(name: "Reachability", url: "https://github.com/ashleymills/Reachability.swift", from: "5.1.0"),
     ],
     targets: [
-        .target(name: "SwiftUI-OSC", dependencies: ["OSCKit", "Reachability"]),
+        .target(name: "SwiftUIOSC", dependencies: ["OSCKit", "Reachability"]),
     ]
 )
