@@ -3,20 +3,27 @@
 
 ## Install
 
+In Xcode go to *File* /  *Swift Packages* / *Add Package Dependecy...* and enter the repo url:
+```
+https://github.com/heestand-xyz/SwiftUIOSC
+```
 
+Import the package:
 
 ```swift
 import SwiftUI
 import SwiftUIOSC
 ```
 
+Create a `OSCState` with a osc address.
+
 ## TL;DR
 
 ```swift
 struct ContentView: View {
-    @OSCState(as: "test") var value: CGFloat = 0.0
+    @OSCState(name: "test") var test: CGFloat = 0.0
     var body: some View {
-        Slider(value: $value)
+        Slider(value: $test)
         .onAppear {
             OSC.shared.clientAddress = "localhost"
             OSC.shared.clientPort = 8000
@@ -30,7 +37,7 @@ struct ContentView: View {
 ```swift
 struct ContentView: View {
     @ObservedObject var osc: OSC = .shared
-    @OSCState(as: "test") var value: CGFloat = 0.0
+    @OSCState(name: "test") var value: CGFloat = 0.0
     var body: some View {
         VStack {
             HStack {

@@ -44,7 +44,7 @@ public class OSC: ObservableObject, OSCConnectionMonitorDelegate {
         server = OSCServer()
 
         taker = OSCTaker(take: { address, values in
-            print("OSCWrapper - Received OSC at \"\(address)\" with values:", values)
+            print("SwiftUIOSC - Received OSC at \"\(address)\" with values:", values)
         })
         
         connectionMonitor = OSCConnectionMonitor()
@@ -63,22 +63,19 @@ public class OSC: ObservableObject, OSCConnectionMonitorDelegate {
     func listen() {
         do {
             try server.startListening()
-            print("OSCWrapper - Server listening on port \(serverPort).")
+            print("SwiftUIOSC - Server listening on port \(serverPort).")
         } catch {
-            print("OSCWrapper - Server failed to listen on port \(serverPort):", error)
+            print("SwiftUIOSC - Server failed to listen on port \(serverPort):", error)
         }
     }
     
-    func send(value: Any, at address: String) {
-        send(values: [value], at: address)
-    }
-    
-    func send(values: [Any], at address: String) {
+    func send(_ oscArrayValues: OSCArrayValue, at address: String) {
+        let values: [Any] = oscArrayValues.values
         var address: String = address
         if address.first != "/" {
             address = "/\(address)"
         }
-        print("OSCWrapper - Sent OSC at \"\(address)\" with values:", values)
+        print("SwiftUIOSC - Sent OSC at \"\(address)\" with values:", values)
         let message = OSCMessage(with: address, arguments: values)
         client.send(packet: message)
     }

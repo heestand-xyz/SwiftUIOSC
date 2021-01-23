@@ -1,13 +1,13 @@
 import SwiftUI
 
 @propertyWrapper
-public struct OSCState<T: OSCValue>: DynamicProperty {
+public struct OSCState<T: OSCArrayValue>: DynamicProperty {
     
     let address: String
     
     @State var value: T {
         didSet {
-            OSC.shared.send(value: value, at: address)
+            OSC.shared.send(value, at: address)
         }
     }
     
@@ -28,16 +28,9 @@ public struct OSCState<T: OSCValue>: DynamicProperty {
         }
     }
     
-//    public var osc: Binding<T>!
-    
-    public init(wrappedValue: T, as address: String) {
+    public init(wrappedValue: T, name address: String) {
         self.address = address
         _value = State(wrappedValue: wrappedValue)
-//        osc = Binding<T>(get: {
-//            self.wrappedValue
-//        }, set: { value in
-//            self.wrappedValue = value
-//        })
     }
     
 }
