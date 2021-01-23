@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CocoaAsyncSocket",
+        "repositoryURL": "https://github.com/robbiehanson/CocoaAsyncSocket",
+        "state": {
+          "branch": null,
+          "revision": "dbdc00669c1ced63b27c3c5f052ee4d28f10150c",
+          "version": "7.6.5"
+        }
+      },
+      {
+        "package": "OSCKit",
+        "repositoryURL": "https://github.com/SammySmallman/OSCKit",
+        "state": {
+          "branch": null,
+          "revision": "a15cc8ed664db5913eade7f415a11968084a774c",
+          "version": "2.1.3"
+        }
+      },
+      {
+        "package": "Reachability",
+        "repositoryURL": "https://github.com/ashleymills/Reachability.swift",
+        "state": {
+          "branch": null,
+          "revision": "c01bbdf2d633cf049ae1ed1a68a2020a8bda32e2",
+          "version": "5.1.0"
+        }
+      },
+      {
+        "package": "NetUtils",
+        "repositoryURL": "https://github.com/svdo/swift-netutils",
+        "state": {
+          "branch": null,
+          "revision": "776909ce0b37bd9ea1fa0f2156e4e5ad07a592b8",
+          "version": "4.2.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

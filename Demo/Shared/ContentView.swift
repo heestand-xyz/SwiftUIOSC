@@ -1,42 +1,13 @@
-# SwiftUIOSC
+//
+//  ContentView.swift
+//  Shared
+//
+//  Created by Anton Heestand on 2021-01-22.
+//
 
-
-## Install
-
-In Xcode go to *File* /  *Swift Packages* / *Add Package Dependecy...* and enter the repo url:
-```
-https://github.com/heestand-xyz/SwiftUIOSC
-```
-
-Import the package:
-
-```swift
 import SwiftUI
 import SwiftUIOSC
-```
 
-Create a `OSCState` with a osc address.
-
-## TL;DR
-
-```swift
-struct ContentView: View {
-    @OSCState(name: "test") var test: CGFloat = 0.0
-    var body: some View {
-        Slider(value: $test)
-        .onAppear {
-            OSC.shared.clientAddress = "localhost"
-            OSC.shared.clientPort = 8000
-        }
-    }
-}
-```
-
-## Demo Example
-
-Demo project avalible in repo.
-
-```swift
 struct ContentView: View {
     
     @ObservedObject var osc: OSC = .shared
@@ -179,9 +150,9 @@ struct ContentView: View {
     }
     
 }
-```
 
-## macOS Networking
-
-> If you got a **macOS** target in your project make sure to enable **Networking** under "Signing & Capabilities" / "App Sandbox":
-> Enable "Incoming Connections (Server)" and "Outgoing Connections (Client)"
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}

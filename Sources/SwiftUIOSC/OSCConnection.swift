@@ -9,7 +9,7 @@ public enum OSCConnection {
     case offline
     case wifi
     case cellular
-    var connected: Bool {
+    public var isConnected: Bool {
         [.wifi, .cellular].contains(self)
     }
 }

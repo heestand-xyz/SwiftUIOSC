@@ -9,19 +9,6 @@ public class OSC: ObservableObject, OSCConnectionMonitorDelegate {
     let client: OSCClient
     let server: OSCServer
     
-    /// Remote IP Address
-    @Published public var clientAddress: String = "localhost" {
-        didSet {
-            client.host = clientAddress
-        }
-    }
-    /// Remote Port
-    @Published public var clientPort: Int = 8000 {
-        didSet {
-            client.port = UInt16(clientPort)
-        }
-    }
-    
     // Local IP Address
     @Published var _serverAddress: String?
     public var serverAddress: String? { _serverAddress }
@@ -30,6 +17,21 @@ public class OSC: ObservableObject, OSCConnectionMonitorDelegate {
         didSet {
             server.port = UInt16(serverPort)
             listen()
+        }
+    }
+    
+    /// Remote IP Address
+    @Published public var clientAddress: String = "localhost" {
+        didSet {
+            client.host = clientAddress
+            print("SwiftUIOSC - Client sending to address \(clientAddress).")
+        }
+    }
+    /// Remote Port
+    @Published public var clientPort: Int = 8000 {
+        didSet {
+            client.port = UInt16(clientPort)
+            print("SwiftUIOSC - Client sending on port \(clientPort).")
         }
     }
     
