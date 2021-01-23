@@ -123,36 +123,9 @@ struct ContentView: View {
             
             // Info
             VStack(alignment: .leading) {
-                
-                // Server
                 HStack {
-                    HStack {
-                        Text("Server")
-                            .fontWeight(.bold)
-                        Text("IP Address:")
-                    }
-                    .frame(width: 200, alignment: .trailing)
-                    Text(osc.serverAddress ?? "unknown")
-                }
-                HStack {
-                    Text("Port:")
+                    Text("IP Address:")
                         .frame(width: 200, alignment: .trailing)
-                    TextField("Port", text: Binding<String>(get: {
-                        "\(osc.serverPort)"
-                    }, set: { text in
-                        guard let port = Int(text) else { return }
-                        osc.serverPort = port
-                    }))
-                }
-                
-                // Client
-                HStack {
-                    HStack {
-                        Text("Client")
-                            .fontWeight(.bold)
-                        Text("IP Address:")
-                    }
-                    .frame(width: 200, alignment: .trailing)
                     TextField("Address", text: $osc.clientAddress)
                 }
                 HStack {
@@ -165,7 +138,6 @@ struct ContentView: View {
                         osc.clientPort = port
                     }))
                 }
-                
             }
             
         }
@@ -173,7 +145,6 @@ struct ContentView: View {
         .frame(minWidth: 300, maxWidth: 400)
         .padding()
         .onAppear {
-            osc.serverPort = 7000
             osc.clientAddress = "localhost"
             osc.clientPort = 8000
         }
