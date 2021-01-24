@@ -8,7 +8,7 @@ public class OSC: ObservableObject, OSCConnectionMonitorDelegate {
     
     let client: OSCClient
 //    let server: OSCServer
-    
+
 //    // Local IP Address
 //    @Published var _serverAddress: String?
 //    public var serverAddress: String? { _serverAddress }
@@ -41,7 +41,7 @@ public class OSC: ObservableObject, OSCConnectionMonitorDelegate {
     let connectionMonitor: OSCConnectionMonitor
     @Published public var connection: OSCConnection = .unknown
     
-    var receivers: [String: ([Any]) -> ()] = [:]
+//    var receivers: [String: ([Any]) -> ()] = [:]
     
     // MARK: - Life Cycle
     
@@ -64,15 +64,28 @@ public class OSC: ObservableObject, OSCConnectionMonitorDelegate {
 
 //        listen()
         
-        taker.take = { address, values in
-            for receiver in self.receivers {
-                if receiver.key == address || "/" + receiver.key == address {
-                    receiver.value(values)
-                }
-            }
-        }
+//        taker.take = { address, values in
+//            for receiver in self.receivers {
+//                if receiver.key == address || "/" + receiver.key == address {
+//                    receiver.value(values)
+//                }
+//            }
+//        }
         
     }
+    
+    // MARK: - Register
+    
+//    func register<T: OSCArrayValue>(oscState: OSCState<T>) {
+//        receivers[oscState.address] = { values in
+//            let value: T = .convert(values: values)
+//            print("--->", value)
+//            oscState.receiving = true
+//            oscState.value = value
+//            oscState.receiving = false
+//            print("<---", value)
+//        }
+//    }
     
     // MARK: - Receive
     
@@ -103,7 +116,6 @@ public class OSC: ObservableObject, OSCConnectionMonitorDelegate {
 //            NotificationCenter.default.post(name: .osc, object: nil, userInfo: ["oscValues" : values])
 //        }
 //    }
-    
     
     // MARK: - Listen
     

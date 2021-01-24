@@ -4,6 +4,7 @@ public protocol OSCArrayValue {
     var values: [Any] { get }
     static func convert(values: [Any]) -> Self
 }
+
 public protocol OSCValue: OSCArrayValue {
     static func convert(value: Any) -> Self
 }
