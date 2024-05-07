@@ -5,11 +5,11 @@ public struct OSCState<T: OSCArrayValue>: DynamicProperty {
     
     let address: String
     
-//    @State var receiving: Bool = false
+    @State var receiving: Bool = false
     
     @State var value: T {
         didSet {
-//            guard !receiving else { return }
+            if receiving { return }
             OSC.shared.send(value, at: address)
         }
     }
@@ -34,7 +34,7 @@ public struct OSCState<T: OSCArrayValue>: DynamicProperty {
     public init(wrappedValue: T, name address: String) {
         self.address = address
         _value = State(wrappedValue: wrappedValue)
-//        OSC.shared.register(oscState: self)
+        OSC.shared.register(oscState: self)
     }
     
 }

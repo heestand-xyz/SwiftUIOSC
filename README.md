@@ -159,6 +159,10 @@ struct ContentView: View {
 > If you got a **macOS** target in your project make sure to enable **Networking** under "Signing & Capabilities" / "App Sandbox":
 > Enable "Incoming Connections (Server)" and "Outgoing Connections (Client)"
 
+## Testing
+
+I recommend using [Protokol by Hexler](https://hexler.net/protokol) to test OSC.
+
 ## Credits
 
 powered by [OSCKit](https://github.com/SammySmallman/OSCKit) and [Reachability.swift](https://github.com/ashleymills/Reachability.swift)

@@ -1,23 +1,24 @@
 import CoreGraphics
+import OSCKit
 
 public protocol OSCArrayValue {
-    var values: [Any] { get }
-    static func convert(values: [Any]) -> Self
+    var values: [OSCArgumentProtocol] { get }
+    static func convert(values: [OSCArgumentProtocol]) -> Self
 }
 
-public protocol OSCValue: OSCArrayValue {
-    static func convert(value: Any) -> Self
+public protocol OSCValue: OSCArrayValue, OSCArgumentProtocol {
+    static func convert(value: OSCArgumentProtocol) -> Self
 }
 extension OSCValue {
-    public var values: [Any] { [self] }
-    public static func convert(values: [Any]) -> Self {
-        let value: Any = values.first ?? false
+    public var values: [OSCArgumentProtocol] { [self] }
+    public static func convert(values: [OSCArgumentProtocol]) -> Self {
+        let value: OSCArgumentProtocol = values.first ?? false
         return convert(value: value)
     }
 }
 
 extension Bool: OSCValue {
-    public static func convert(value: Any) -> Bool {
+    public static func convert(value: OSCArgumentProtocol) -> Bool {
         if let bool = value as? Bool {
             return bool
         } else if let int = value as? Int {
@@ -31,7 +32,7 @@ extension Bool: OSCValue {
     }
 }
 extension Int: OSCValue {
-    public static func convert(value: Any) -> Int {
+    public static func convert(value: OSCArgumentProtocol) -> Int {
         if let bool = value as? Bool {
             return bool ? 1 : 0
         } else if let int = value as? Int {
@@ -45,7 +46,7 @@ extension Int: OSCValue {
     }
 }
 extension CGFloat: OSCValue {
-    public static func convert(value: Any) -> CGFloat {
+    public static func convert(value: OSCArgumentProtocol) -> CGFloat {
         if let bool = value as? Bool {
             return bool ? 1.0 : 0.0
         } else if let int = value as? Int {
@@ -59,7 +60,7 @@ extension CGFloat: OSCValue {
     }
 }
 extension Double: OSCValue {
-    public static func convert(value: Any) -> Double {
+    public static func convert(value: OSCArgumentProtocol) -> Double {
         if let bool = value as? Bool {
             return bool ? 1.0 : 0.0
         } else if let int = value as? Int {
@@ -73,14 +74,14 @@ extension Double: OSCValue {
     }
 }
 extension String: OSCValue {
-    public static func convert(value: Any) -> String {
+    public static func convert(value: OSCArgumentProtocol) -> String {
         value as? String ?? "#"
     }
 }
 
 extension CGPoint: OSCArrayValue {
-    public var values: [Any] { [x, y] }
-    public static func convert(values: [Any]) -> CGPoint {
+    public var values: [OSCArgumentProtocol] { [x, y] }
+    public static func convert(values: [OSCArgumentProtocol]) -> CGPoint {
         guard values.count == 2 else { return .zero }
         guard let value0: CGFloat = values[0] as? CGFloat else { return .zero }
         guard let value1: CGFloat = values[1] as? CGFloat else { return .zero }
@@ -88,8 +89,8 @@ extension CGPoint: OSCArrayValue {
     }
 }
 extension CGSize: OSCArrayValue {
-    public var values: [Any] { [width, height] }
-    public static func convert(values: [Any]) -> CGSize {
+    public var values: [OSCArgumentProtocol] { [width, height] }
+    public static func convert(values: [OSCArgumentProtocol]) -> CGSize {
         guard values.count == 2 else { return .zero }
         guard let value0: CGFloat = values[0] as? CGFloat else { return .zero }
         guard let value1: CGFloat = values[1] as? CGFloat else { return .zero }
@@ -97,8 +98,8 @@ extension CGSize: OSCArrayValue {
     }
 }
 extension CGRect: OSCArrayValue {
-    public var values: [Any] { [minX, minY, width, height] }
-    public static func convert(values: [Any]) -> CGRect {
+    public var values: [OSCArgumentProtocol] { [minX, minY, width, height] }
+    public static func convert(values: [OSCArgumentProtocol]) -> CGRect {
         guard values.count == 4 else { return .zero }
         guard let value0: CGFloat = values[0] as? CGFloat else { return .zero }
         guard let value1: CGFloat = values[1] as? CGFloat else { return .zero }
@@ -107,12 +108,3 @@ extension CGRect: OSCArrayValue {
         return CGRect(x: value0, y: value1, width: value2, height: value3)
     }
 }
-
-//extension Array: OSCArrayValue where Element == OSCValue {
-//    public var values: [Any] { self }
-//    public static func convert(values: [Any]) -> OSCArrayValue {
-//        values.map({ value -> T in
-//            T.convert(value: value)
-//        })
-//    }
-//}

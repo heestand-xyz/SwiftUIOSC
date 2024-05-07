@@ -10,11 +10,11 @@ import SwiftUIOSC
 
 struct ContentView: View {
     
-    @ObservedObject var osc: OSC = .shared
+    @State private var osc: OSC = .shared
     
-    @OSCState(name: "test/float") var testFloat: CGFloat = 0.0
-    @OSCState(name: "test/int") var testInt: Int = 0
-    @OSCState(name: "test/string") var testString: String = ""
+    @OSCState(name: "/test/float") private var testFloat: CGFloat = 0.0
+    @OSCState(name: "/test/int") private var testInt: Int = 0
+    @OSCState(name: "/test/string") private var testString: String = ""
     
     var body: some View {
         
@@ -93,18 +93,28 @@ struct ContentView: View {
             // Info
             VStack(alignment: .leading) {
                 HStack {
-                    Text("IP Address:")
+                    Text("Client Address:")
                         .frame(width: 200, alignment: .trailing)
                     TextField("Address", text: $osc.clientAddress)
                 }
                 HStack {
-                    Text("Port:")
+                    Text("Client Port:")
                         .frame(width: 200, alignment: .trailing)
                     TextField("Port", text: Binding<String>(get: {
                         "\(osc.clientPort)"
                     }, set: { text in
                         guard let port = Int(text) else { return }
                         osc.clientPort = port
+                    }))
+                }
+                HStack {
+                    Text("Server Port:")
+                        .frame(width: 200, alignment: .trailing)
+                    TextField("Port", text: Binding<String>(get: {
+                        "\(osc.serverPort)"
+                    }, set: { text in
+                        guard let port = Int(text) else { return }
+                        osc.serverPort = port
                     }))
                 }
             }
@@ -115,15 +125,12 @@ struct ContentView: View {
         .padding()
         .onAppear {
             osc.clientAddress = "localhost"
-            osc.clientPort = 8008
+            osc.clientPort = 8000
+            osc.serverPort = 7000
         }
-        
     }
-    
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+#Preview {
+    ContentView()
 }

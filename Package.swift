@@ -1,22 +1,27 @@
-// swift-tools-version:5.3
+// swift-tools-version: 5.9
 
 import PackageDescription
 
 let package = Package(
     name: "SwiftUIOSC",
     platforms: [
-        .iOS(.v13),
-        .tvOS(.v13),
-        .macOS(.v10_15),
+        .iOS(.v17),
+        .macOS(.v14),
     ],
     products: [
         .library(name: "SwiftUIOSC", targets: ["SwiftUIOSC"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/SammySmallman/OSCKit", from: "2.1.0"),
-        .package(name: "Reachability", url: "https://github.com/ashleymills/Reachability.swift", from: "5.1.0"),
+        .package(url: "https://github.com/SammySmallman/OSCKit", from: "3.2.0"),
+        .package(url: "https://github.com/ashleymills/Reachability.swift", from: "5.1.0"),
     ],
     targets: [
-        .target(name: "SwiftUIOSC", dependencies: ["OSCKit", "Reachability"]),
+        .target(
+            name: "SwiftUIOSC",
+            dependencies: [
+                "OSCKit",
+                .product(name: "Reachability", package: "Reachability.swift")
+            ]
+        ),
     ]
 )
