@@ -1,7 +1,7 @@
 import SwiftUI
 
 @propertyWrapper
-public struct OSCState<T: OSCArrayValue>: DynamicProperty {
+public struct OSCState<T: OSCArray>: DynamicProperty {
     
     let address: String
     
@@ -10,7 +10,7 @@ public struct OSCState<T: OSCArrayValue>: DynamicProperty {
     @State var value: T {
         didSet {
             if receiving { return }
-            OSC.shared.send(value, at: address)
+            OSCManager.send(value, at: address)
         }
     }
     
@@ -34,7 +34,7 @@ public struct OSCState<T: OSCArrayValue>: DynamicProperty {
     public init(wrappedValue: T, name address: String) {
         self.address = address
         _value = State(wrappedValue: wrappedValue)
-        OSC.shared.register(oscState: self)
+        OSCManager.register(oscState: self)
     }
     
 }

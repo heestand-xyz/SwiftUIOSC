@@ -7,10 +7,12 @@
 
 import SwiftUI
 import SwiftUIOSC
+import OSCTools2
 
 struct ContentView: View {
     
-    @State private var osc: OSC = .shared
+    @StateObject var oscSettings: OSCSettings = OSCManager.osc.settings
+    @StateObject var oscConnection: OSCConnection = OSCManager.osc.connection
     
     @OSCState(name: "/test/float") private var testFloat: CGFloat = 0.0
     @OSCState(name: "/test/int") private var testInt: Int = 0
@@ -22,14 +24,12 @@ struct ContentView: View {
             
             // Connection
             HStack {
-                if osc.connection.isConnected {
+                if oscConnection.state != .offline {
                     Text("Connected on")
                 } else {
                     Text("Connection is")
                 }
-                switch osc.connection {
-                case .unknown:
-                    Label("Unknown", systemImage: "wifi.exclamationmark")
+                switch oscConnection.state {
                 case .offline:
                     Label("Offline", systemImage: "wifi.slash")
                 case .wifi:
@@ -41,7 +41,7 @@ struct ContentView: View {
             
             Divider()
             
-            // Test Float
+            // Float
             HStack {
                 
                 Text("Float")
@@ -61,7 +61,7 @@ struct ContentView: View {
                 
             }
             
-            // Test Int
+            // Int
             HStack {
             
                 Text("Int")
@@ -77,7 +77,7 @@ struct ContentView: View {
     
             }
             
-            // Test String
+            // String
             HStack {
             
                 Text("String")
@@ -95,26 +95,26 @@ struct ContentView: View {
                 HStack {
                     Text("Client Address:")
                         .frame(width: 200, alignment: .trailing)
-                    TextField("Address", text: $osc.clientAddress)
+                    TextField("Address", text: $oscSettings.clientAddress)
                 }
                 HStack {
                     Text("Client Port:")
                         .frame(width: 200, alignment: .trailing)
                     TextField("Port", text: Binding<String>(get: {
-                        "\(osc.clientPort)"
+                        "\(oscSettings.clientPort)"
                     }, set: { text in
                         guard let port = Int(text) else { return }
-                        osc.clientPort = port
+                        oscSettings.clientPort = port
                     }))
                 }
                 HStack {
                     Text("Server Port:")
                         .frame(width: 200, alignment: .trailing)
                     TextField("Port", text: Binding<String>(get: {
-                        "\(osc.serverPort)"
+                        "\(oscSettings.serverPort)"
                     }, set: { text in
                         guard let port = Int(text) else { return }
-                        osc.serverPort = port
+                        oscSettings.serverPort = port
                     }))
                 }
             }
@@ -124,9 +124,9 @@ struct ContentView: View {
         .frame(minWidth: 300, maxWidth: 400)
         .padding()
         .onAppear {
-            osc.clientAddress = "localhost"
-            osc.clientPort = 8000
-            osc.serverPort = 7000
+            oscSettings.clientAddress = "localhost"
+            oscSettings.clientPort = 8000
+            oscSettings.serverPort = 7000
         }
     }
 }
