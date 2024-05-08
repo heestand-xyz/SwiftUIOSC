@@ -11,8 +11,8 @@ import OSCTools2
 
 struct ContentView: View {
     
-    @StateObject var oscSettings: OSCSettings = OSCManager.osc.settings
-    @StateObject var oscConnection: OSCConnection = OSCManager.osc.connection
+    @StateObject private var oscSettings: OSCSettings = OSCManager.osc.settings
+    @StateObject private var oscConnection: OSCConnection = OSCManager.osc.connection
     
     @OSCState(name: "/test/float") private var testFloat: CGFloat = 0.0
     @OSCState(name: "/test/int") private var testInt: Int = 0

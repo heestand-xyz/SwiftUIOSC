@@ -3,16 +3,17 @@
 
 ## Install
 
-In Xcode go to *File* /  *Swift Packages* / *Add Package Dependecy...* and enter the repo url:
+In Xcode go to *File* /  *Swift Packages* / *Add Package Dependency...* and enter the repo url:
 ```
 https://github.com/heestand-xyz/SwiftUIOSC
 ```
 
-Import the package:
+Import packages:
 
 ```swift
 import SwiftUI
 import SwiftUIOSC
+import OSCTools2
 ```
 
 Wrap a property with the `@OSCState` and give it an osc address name.
@@ -21,31 +22,38 @@ Wrap a property with the `@OSCState` and give it an osc address name.
 
 ```swift
 struct ContentView: View {
-    @OSCState(name: "test") var test: CGFloat = 0.0
+    
+    @OSCState(name: "test") private var test: CGFloat = 0.0
+    
     var body: some View {
         Slider(value: $test)
-        .onAppear {
-            OSC.shared.clientAddress = "localhost"
-            OSC.shared.clientPort = 8000
-        }
+            .onAppear {
+                OSCManager.osc.settings.clientAddress = "localhost"
+                OSCManager.osc.settings.clientPort = 8000
+            }
     }
 }
 ```
 
 ## Demo Project
 
-Demo project avalible in repo.
+Demo project available in repo.
 
 <img src="https://github.com/heestand-xyz/SwiftUIOSC/blob/main/Assets/SwiftUIOSC-Screenshot-iOS.png?raw=true" width=300> <img src="https://github.com/heestand-xyz/SwiftUIOSC/blob/main/Assets/SwiftUIOSC-Screenshot-macOS.png?raw=true" width=400>
 
 ```swift
+import SwiftUI
+import SwiftUIOSC
+import OSCTools2
+
 struct ContentView: View {
     
-    @ObservedObject var osc: OSC = .shared
+    @StateObject private var oscSettings: OSCSettings = OSCManager.osc.settings
+    @StateObject private var oscConnection: OSCConnection = OSCManager.osc.connection
     
-    @OSCState(name: "test/float") var testFloat: CGFloat = 0.0
-    @OSCState(name: "test/int") var testInt: Int = 0
-    @OSCState(name: "test/string") var testString: String = ""
+    @OSCState(name: "/test/float") private var testFloat: CGFloat = 0.0
+    @OSCState(name: "/test/int") private var testInt: Int = 0
+    @OSCState(name: "/test/string") private var testString: String = ""
     
     var body: some View {
         
@@ -53,14 +61,12 @@ struct ContentView: View {
             
             // Connection
             HStack {
-                if osc.connection.isConnected {
+                if oscConnection.state != .offline {
                     Text("Connected on")
                 } else {
                     Text("Connection is")
                 }
-                switch osc.connection {
-                case .unknown:
-                    Label("Unknown", systemImage: "wifi.exclamationmark")
+                switch oscConnection.state {
                 case .offline:
                     Label("Offline", systemImage: "wifi.slash")
                 case .wifi:
@@ -72,7 +78,7 @@ struct ContentView: View {
             
             Divider()
             
-            // Test Float
+            // Float
             HStack {
                 
                 Text("Float")
@@ -92,7 +98,7 @@ struct ContentView: View {
                 
             }
             
-            // Test Int
+            // Int
             HStack {
             
                 Text("Int")
@@ -108,7 +114,7 @@ struct ContentView: View {
     
             }
             
-            // Test String
+            // String
             HStack {
             
                 Text("String")
@@ -124,18 +130,28 @@ struct ContentView: View {
             // Info
             VStack(alignment: .leading) {
                 HStack {
-                    Text("IP Address:")
+                    Text("Client Address:")
                         .frame(width: 200, alignment: .trailing)
-                    TextField("Address", text: $osc.clientAddress)
+                    TextField("Address", text: $oscSettings.clientAddress)
                 }
                 HStack {
-                    Text("Port:")
+                    Text("Client Port:")
                         .frame(width: 200, alignment: .trailing)
                     TextField("Port", text: Binding<String>(get: {
-                        "\(osc.clientPort)"
+                        "\(oscSettings.clientPort)"
                     }, set: { text in
                         guard let port = Int(text) else { return }
-                        osc.clientPort = port
+                        oscSettings.clientPort = port
+                    }))
+                }
+                HStack {
+                    Text("Server Port:")
+                        .frame(width: 200, alignment: .trailing)
+                    TextField("Port", text: Binding<String>(get: {
+                        "\(oscSettings.serverPort)"
+                    }, set: { text in
+                        guard let port = Int(text) else { return }
+                        oscSettings.serverPort = port
                     }))
                 }
             }
@@ -145,12 +161,15 @@ struct ContentView: View {
         .frame(minWidth: 300, maxWidth: 400)
         .padding()
         .onAppear {
-            osc.clientAddress = "localhost"
-            osc.clientPort = 8000
+            oscSettings.clientAddress = "localhost"
+            oscSettings.clientPort = 8000
+            oscSettings.serverPort = 7000
         }
-        
     }
-    
+}
+
+#Preview {
+    ContentView()
 }
 ```
 

@@ -36,5 +36,4 @@ public struct OSCState<T: OSCArray>: DynamicProperty {
         _value = State(wrappedValue: wrappedValue)
         OSCManager.register(oscState: self)
     }
-    
 }
