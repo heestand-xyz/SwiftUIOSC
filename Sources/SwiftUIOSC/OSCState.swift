@@ -1,6 +1,8 @@
+import Observation
 import SwiftUI
 
 @propertyWrapper
+@Observable
 public class OSCState<T: OSCArray> {
     
     let address: String
@@ -14,15 +16,16 @@ public class OSCState<T: OSCArray> {
         }
     }
     
-    public var projectedValue: Binding<T> {
-        Binding<T> { [unowned self] in
-            return self.wrappedValue
-        } set: { [weak self] value in
-            self?.wrappedValue = value
+    public var osc: T {
+        get {
+            wrappedValue
+        }
+        set {
+            wrappedValue = newValue
         }
     }
-        
-    public init(wrappedValue: T, name address: String) {
+    
+    public init(wrappedValue: T, address: String) {
         self.address = address
         self.wrappedValue = wrappedValue
         OSCManager.register(oscState: self)

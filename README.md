@@ -23,10 +23,10 @@ Wrap a property with the `@OSCState` and give it an osc address name.
 ```swift
 struct ContentView: View {
     
-    @OSCState(name: "test") private var test: CGFloat = 0.0
+    @State @OSCState(address: "/test") private var test: CGFloat = 0.0
     
     var body: some View {
-        Slider(value: $test)
+        Slider(value: $test.osc)
             .onAppear {
                 OSCManager.osc.settings.clientAddress = "localhost"
                 OSCManager.osc.settings.clientPort = 8000
@@ -51,9 +51,9 @@ struct ContentView: View {
     @StateObject private var oscSettings: OSCSettings = OSCManager.osc.settings
     @StateObject private var oscConnection: OSCConnection = OSCManager.osc.connection
     
-    @OSCState(name: "/test/float") private var testFloat: CGFloat = 0.0
-    @OSCState(name: "/test/int") private var testInt: Int = 0
-    @OSCState(name: "/test/string") private var testString: String = ""
+    @State @OSCState(address: "/test/float") private var testFloat: CGFloat = 0.0
+    @State @OSCState(address: "/test/int") private var testInt: Int = 0
+    @State @OSCState(address: "/test/string") private var testString: String = ""
     
     var body: some View {
         
@@ -62,7 +62,7 @@ struct ContentView: View {
             // Connection
             HStack {
                 if oscConnection.state != .offline {
-                    Text("Connected on")
+                    Text("Connected over")
                 } else {
                     Text("Connection is")
                 }
@@ -92,7 +92,7 @@ struct ContentView: View {
                 }
                 .disabled(testFloat == 0.0)
                 
-                Slider(value: $testFloat)
+                Slider(value: $testFloat.osc)
                 
                 Text("\(testFloat, specifier: "%.2f")")
                 
@@ -105,7 +105,7 @@ struct ContentView: View {
                     .fontWeight(.bold)
                     .frame(width: 75, alignment: .trailing)
                 
-                Picker("", selection: $testInt) {
+                Picker("", selection: $testInt.osc) {
                     Text("First").tag(0)
                     Text("Second").tag(1)
                     Text("Third").tag(2)
@@ -121,7 +121,7 @@ struct ContentView: View {
                     .fontWeight(.bold)
                     .frame(width: 75, alignment: .trailing)
                 
-                TextField("Text", text: $testString)
+                TextField("Text", text: $testString.osc)
                 
             }
             

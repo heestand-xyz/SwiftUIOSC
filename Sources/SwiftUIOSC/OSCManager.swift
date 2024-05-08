@@ -17,6 +17,7 @@ public struct OSCManager {
                 return
             }
             let value: T = .convert(values: values)
+            print("SwiftUIOSC - Received OSC:", value, "on address:", oscState.address)
             oscState.receiving = true
             oscState.wrappedValue = value
             oscState.receiving = false
@@ -25,12 +26,13 @@ public struct OSCManager {
     
     // MARK: - Send
     
-    static func send(_ oscArrayValues: OSCArray, at address: String) {
-        let values: [any OSCValue] = oscArrayValues.values
+    static func send(_ value: OSCArray, at address: String) {
+        let values: [any OSCValue] = value.values
         var address: String = address
         if address.first != "/" {
             address = "/\(address)"
         }
+        print("SwiftUIOSC - Sending OSC:", value, "on address:", address)
         osc.send(values: values, address: address)
     }
 }
