@@ -9,7 +9,6 @@ public class OSCState<T: OSCArray> {
     
     public var wrappedValue: T {
         didSet {
-            print("-------->", wrappedValue)
             if receiving { return }
             OSCManager.send(wrappedValue, at: address)
         }
