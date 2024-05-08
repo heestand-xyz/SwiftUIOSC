@@ -25,7 +25,7 @@ struct ContentView: View {
             // Connection
             HStack {
                 if oscConnection.state != .offline {
-                    Text("Connected on")
+                    Text("Connected over")
                 } else {
                     Text("Connection is")
                 }

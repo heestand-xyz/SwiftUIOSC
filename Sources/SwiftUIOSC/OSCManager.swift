@@ -18,7 +18,7 @@ public struct OSCManager {
             }
             let value: T = .convert(values: values)
             oscState.receiving = true
-            oscState.value = value
+            oscState.wrappedValue = value
             oscState.receiving = false
         }
     }
