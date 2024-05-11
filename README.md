@@ -181,7 +181,3 @@ struct ContentView: View {
 ## Testing
 
 I recommend using [Protokol by Hexler](https://hexler.net/protokol) to test OSC.
-
-## Credits
-
-powered by [OSCKit](https://github.com/SammySmallman/OSCKit) and [Reachability.swift](https://github.com/ashleymills/Reachability.swift)
