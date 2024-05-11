@@ -16,7 +16,7 @@ import SwiftUIOSC
 import OSCTools2
 ```
 
-Wrap a property with the `@OSCState` and give it an osc address name.
+Wrap a property with both the `@State` and `@OSCState`, then give it an address.
 
 ## TL;DR
 
