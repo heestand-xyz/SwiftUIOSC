@@ -12,10 +12,6 @@ public struct OSCManager {
         osc.backgroundListenToAnyArray {
             oscState.address
         } _: { values in
-            guard let values = values as? [any OSCValue] else {
-                print("SwiftUIOSC - Type conversion failed.")
-                return
-            }
             let value: T = .convert(values: values)
             print("SwiftUIOSC - Received OSC:", value, "on address:", oscState.address)
             oscState.receiving = true

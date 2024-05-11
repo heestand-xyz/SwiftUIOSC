@@ -15,7 +15,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../OSCTools2"),
+        .package(url: "https://github.com/heestand-xyz/OSCTools2", from: "2.0.0"),
     ],
     targets: [
         .target(
